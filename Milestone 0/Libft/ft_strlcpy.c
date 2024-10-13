@@ -6,20 +6,25 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:48:58 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/11 15:51:59 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/10/12 14:46:08 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 // ----------------------------------------------------------------------------------- INACABADA -----------------------------------------------------------------------------------
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
+size_t ft_strlcpy(char *dest, const char *src, size_t size)
 {
-	int	s_len;
+	size_t i;
 
-	s_len = 0;
-	while (src[s_len])
-		s_len++;
-
+	if (size == 0)
+		return (ft_strlen(src));
+	i = 0;
+	while (src[i] && i < (size - 1))
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (ft_strlen(src));
 }

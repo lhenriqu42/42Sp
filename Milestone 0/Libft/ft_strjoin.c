@@ -1,28 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcpy.c                                        :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/11 15:14:42 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/12 14:25:15 by lhenriqu         ###   ########.fr       */
+/*   Created: 2024/10/12 22:19:39 by lhenriqu          #+#    #+#             */
+/*   Updated: 2024/10/12 22:25:41 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	*ft_memcpy(void *dest, const void *src, size_t n)
+char *ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
+    size_t i;
+    char *str;
 
-	i = 0;
-	if (dest == NULL && src == NULL)
-		return (NULL);
-	while (i < n)
-	{
-		((unsigned char *)dest)[i] = ((unsigned char *)src)[i];
-		i++;
-	}
-	return (dest);
+    str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+    if (str == NULL)
+        return (NULL);
+    i = 0;
+    while (*s1)
+        str[i++] = *s1++;
+    while (*s2)
+        str[i++] = *s2++;
+    str[i] = '\0';
+    return (str);
 }
