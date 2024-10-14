@@ -6,7 +6,7 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 09:37:33 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/11 13:23:56 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:55:50 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,3 @@ int	ft_atoi(const char *str)
 	}
 	return (num * sign);
 }
-
-// int	main(void)
-// {
-// 	char *str = " -10";
-// 	printf("%i\n", ft_atoi(str));
-// 	printf("%i\n", atoi(str));
-// }

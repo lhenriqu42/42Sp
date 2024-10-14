@@ -6,15 +6,15 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:22:07 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/12 14:26:48 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:58:18 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void *ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	size_t i;
+	size_t	i;
 
 	if (dest == NULL || src == NULL)
 		return (NULL);
