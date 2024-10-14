@@ -26,7 +26,7 @@ int		ft_toupper(int i);
 int		ft_atoi(const char *str);
 char	*ft_strdup(const char *s);
 void	ft_bzero(void *s, size_t n);
-size_t	t_strlen(const char *str);
+size_t	ft_strlen(const char *str);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 void	*ft_calloc(size_t count, size_t size);
