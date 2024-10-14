@@ -1,6 +1,5 @@
 NAME := libft.a
 SRCS := ft_atoi.c \
-        ft_itoa.c \
         ft_bzero.c \
         ft_split.c \
         ft_calloc.c \
@@ -27,27 +26,32 @@ SRCS := ft_atoi.c \
         ft_strrchr.c \
         ft_strtrim.c \
         ft_tolower.c \
-        ft_toupper.c \
+        ft_toupper.c
+        # ft_itoa.c \
         ft_putnbr_fd.c \
         ft_putstr_fd.c \
         ft_putendl_fd.c \
         ft_putchar_fd.c
+
 HEADER := libft.h
-OBJ :=$(SRCS: %.c=%.o)
+OBJ = $(SRCS:%.c=%.o)
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
 
-All: $(NAME)
+all: $(NAME)
 
 $(NAME): $(OBJ)
-	ar rcs $(NAME) $?
+	ar rcs $@ $?
+
+%.o: %.c $(HEADER)
+	$(CC) $(FLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(OBJECTS)
+	rm -rf $(OBJ)
 
 fclean: clean
 	rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY:	all clean fclean re bonus
+.PHONY: all clean fclean re

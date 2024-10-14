@@ -15,7 +15,6 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-// PART 1
 int		ft_isalnum(int i);
 int		ft_isalpha(int i);
 int		ft_isascii(int i);
@@ -39,16 +38,12 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlcpy(char *dest, const char *src, size_t size);
 size_t	ft_strlcat(char *dest, const char *src, size_t d_size);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
-
-// PART 2
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	**ft_split(char const *str, char c);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
-
-
 char	*ft_itoa(int n);
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);

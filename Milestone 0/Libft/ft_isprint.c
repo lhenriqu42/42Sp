@@ -2,11 +2,11 @@
 /*                                                                            */
 /*                                                        :::      ::::::::   */
 /*   ft_isprint.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+        
+/*                                                    +:+ +:+
 	+:+     */
-/*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+      
+/*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+
 	+#+        */
-/*                                                +#+#+#+#+#+  
+/*                                                +#+#+#+#+#+
 	+#+           */
 /*   Created: 2024/10/11 09:54:36 by lhenriqu          #+#    #+#             */
 /*   Updated: 2024/10/11 09:54:36 by lhenriqu         ###   ########.fr       */
@@ -17,8 +17,8 @@
 
 int	ft_isprint(int i)
 {
-	if (i < ' ' || i == 127)
-		return (0);
-	else
+	if (i >= ' ' && i <= '~')
 		return (1);
+	else
+		return (0);
 }
