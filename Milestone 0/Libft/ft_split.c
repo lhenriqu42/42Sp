@@ -6,7 +6,7 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 11:29:50 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/14 15:58:15 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:16:25 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ static int	ft_count_words(const char *str, char c)
 {
 	size_t	count;
 
-	if (c == '\0')
-		return (1);
 	count = 0;
 	if (*str == '\0')
 		return (count);
+	if (c == '\0')
+		return (1);
 	while (*str)
 	{
 		count++;
@@ -73,14 +73,18 @@ char	**ft_split(char const *str, char c)
 {
 	char	**matrix;
 	int		count_words;
+	char	*strtrim;
+	char	test[2];
 
-	while (*str && *str == c)
-		str++;
-	count_words = ft_count_words(str, c);
+	test[0] = c;
+	test[1] = '\0';
+	strtrim = ft_strtrim(str, test);
+	count_words = ft_count_words(strtrim, c);
 	matrix = (char **)malloc((count_words + 1) * sizeof(char *));
 	if (matrix == NULL)
 		return (NULL);
-	matrix = fill_matrix(matrix, str, c);
+	matrix = fill_matrix(matrix, strtrim, c);
 	matrix[count_words] = NULL;
+	free(strtrim);
 	return (matrix);
 }
