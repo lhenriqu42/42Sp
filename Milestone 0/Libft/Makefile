@@ -36,7 +36,7 @@ SRCS := ft_atoi.c \
 
 HEADER := libft.h
 OBJ = $(SRCS:%.c=%.o)
-CC = gcc
+CC = cc
 FLAGS = -Wall -Wextra -Werror
 
 all: $(NAME)
