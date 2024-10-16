@@ -6,7 +6,7 @@
 #    By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/15 19:52:41 by lhenriqu          #+#    #+#              #
-#    Updated: 2024/10/15 23:31:00 by lhenriqu         ###   ########.fr        #
+#    Updated: 2024/10/16 08:57:01 by lhenriqu         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -98,4 +98,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re bonus
