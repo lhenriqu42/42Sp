@@ -2,7 +2,7 @@
 #include <stdio.h> // printf()
 #include <stdlib.h> // free()
 
-char	*g_file_name = "./example2";
+char	*g_file_name = "./example";
 FILE	*g_fd;
 
 char	*get_next_line(int fd);
@@ -25,7 +25,7 @@ int main()
         const char *color_start = "\033[1;32m"; // Bright green
         const char *color_end = "\033[0m"; // Reset color
 
-        printf("%sLine %i >>>%s %s", color_start, i++, color_end, linha);
+        printf("%s Line %i >>>%s %s ||||||||||||||||", color_start, i++, color_end, linha);
         free(linha);
         // if(i == 20)
         //     break;

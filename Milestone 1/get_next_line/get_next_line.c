@@ -6,102 +6,109 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:28:40 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/17 11:06:24 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/10/18 08:50:07 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-static void *free_alloc(char **line, char **rest)
-{
-    if (line && *line)
-    {
-        free(*line);
-        *line = NULL;
-    }
-    if (rest && *rest)
-    {
-        free(*rest);
-        *rest = NULL;
-    }
-    return (NULL);
-}
-
-static char *store_rest(char **line, int nl_position)
+char *ft_substr(char const *s, unsigned int start, size_t len)
 {
     char *str;
-    int i;
-    int len;
+    size_t i;
+    size_t s_len;
 
-    i = nl_position;
-    while ((*line)[i])
+    s_len = ft_strlen(s);
+    if (start >= s_len)
+        return (ft_strdup(""));
+    if ((s_len - start) < len)
+        len = s_len - start;
+    str = (char *)malloc((len + 1) * sizeof(char));
+    if (str == NULL)
+        return (NULL);
+    i = 0;
+    while (i < len)
+    {
+        str[i] = s[start + i];
         i++;
-    len = i - nl_position;
-    str = malloc(len + 1);
-    if (!str)
-        return (NULL);
-    str[len] = '\0';
-    ft_strlcpy(str, *line + nl_position, len + 1);
-    return str;
-}
-
-static char *get_left_part(char **line, int nl_position)
-{
-    char *str = malloc(nl_position + 2);
-    if (!str)
-        return (NULL);
-    ft_strlcpy(str, *line, nl_position + 2);
-    str[nl_position + 1] = '\0';
+    }
+    str[i] = '\0';
     return (str);
 }
 
-static char *return_line(char **line, char **rest, int nl_position, int n)
+void start(char **rest)
 {
-    char *left_part;
-    char *new_rest;
+    if (!*rest)
+        *rest = ft_strdup("");
+}
 
-    if (nl_position == -1)
+int verify(char **buffer, char **rest, char **line, ssize_t bytes_read)
+{
+    if (buffer && *buffer)
+        free(*buffer);
+    if (bytes_read == 0 && *rest && **rest != '\0') // Se o resto tem algo
     {
-        free_alloc(NULL, rest);
-        return *line;
-    }
-    else
-    {
-        left_part = get_left_part(line, nl_position);
-        if (!left_part)
-            return (NULL);
-        new_rest = ft_strdup(*line + nl_position + 1);
-        if (!new_rest)
-        {
-            free(left_part);
-            return (NULL);
-        }
+        *line = ft_strdup(*rest);
         free(*rest);
-        *rest = new_rest;
-        return *line;
+        *rest = NULL;
+        return (1); // Retorna a última linha do arquivo
     }
+    if (bytes_read == 0 && (!rest || **rest == '\0')) // Fim do arquivo e nada no resto
+    {
+        free(*rest);
+        *rest = NULL;
+        return (0); // Retorna NULL para indicar fim do arquivo
+    }
+    if (bytes_read == -1)
+        free(*line);
+
+    return (0);
+}
+
+int read_fd(char **line, char *buffer, char **rest, int fd)
+{
+    ssize_t bytes_read;
+    int new_line_index;
+
+    while ((bytes_read = read(fd, buffer, BUFFER_SIZE)) > 0)
+    {
+        buffer[bytes_read] = '\0';
+        *rest = ft_strjoin(*rest, buffer);
+        new_line_index = get_new_line_index(*rest);
+        if (new_line_index >= 0)
+        {
+            *line = ft_substr(*rest, 0, new_line_index + 1);
+            if (!line)
+                return (0);
+            char *tmp = *rest;
+            *rest = ft_strdup(*rest + new_line_index + 1);
+            free(tmp);
+            if (!rest)
+                return (0);
+            free(buffer);
+            return (1);
+        }
+    }
+    return (verify(&buffer, rest, line, bytes_read));
 }
 
 char *get_next_line(int fd)
 {
-    static char *rest;
-    char buffer[BUFFER_SIZE + 1];
+    static char *rest = NULL;
+    char *buffer;
     char *line;
-    int chars_read;
 
-    if (!rest)
-        rest = ft_strdup("");
-    line = ft_strdup(rest);
-    chars_read = BUFFER_SIZE;
+    start(&rest);
+    if (fd < 0 || BUFFER_SIZE <= 0)
+        return (NULL);
 
-    while (chars_read == BUFFER_SIZE && get_new_line_index(line) == -1)
-    {
-        chars_read = read(fd, buffer, BUFFER_SIZE);
-        if (chars_read < 0)
-            return (free_alloc(&line, &rest));
-        buffer[chars_read] = '\0';
-        line = ft_strjoin(line, buffer);
-    }
-    return (return_line(&line, &rest, get_new_line_index(line), chars_read));
+    buffer = (char *)malloc(sizeof(char) * (BUFFER_SIZE + 1));
+    if (!buffer)
+        return (NULL);
+
+    if (read_fd(&line, buffer, &rest, fd))
+        return (line);
+    else
+        return (NULL);
 }
+
