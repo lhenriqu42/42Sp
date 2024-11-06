@@ -6,87 +6,47 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:31:02 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/10/16 10:39:06 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/11/06 16:21:28 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *str)
+t_data *calloc_new_struct(int fd)
 {
-	size_t	len;
+    t_data *new_data;
+    int i;
 
-	len = 0;
-	while (str[len])
-		len++;
-	return (len);
+    new_data = (t_data *)malloc(sizeof(t_data));
+    if (!new_data)
+        return (NULL);
+    new_data->fd = fd;
+    i = 0;
+    while (i < BUFFER_SIZE)
+        new_data->buffer[i++] = '\0';
+    new_data->nl_index = -1;
+    new_data->start_string = NULL;
+    new_data->next = NULL;
+    return (new_data);
 }
 
-char	*ft_strdup(const char *s)
+t_data *init_data(t_data **data, int fd)
 {
-	char	*ptr;
-	size_t	len;
-	size_t	i;
+    t_data *current;
 
-	len = ft_strlen(s);
-	ptr = malloc((len + 1) * sizeof(char));
-	if (ptr == NULL)
-		return (NULL);
-	i = 0;
-	while (i < len)
-	{
-		ptr[i] = s[i];
-		i++;
-	}
-	ptr[i] = '\0';
-	return (ptr);
-}
-
-char	*ft_strjoin(char const *s1, char const *s2)
-{
-	size_t	i;
-	char	*str;
-
-	str = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
-	if (str == NULL)
-		return (NULL);
-	i = 0;
-	while (*s1)
-		str[i++] = *s1++;
-	while (*s2)
-		str[i++] = *s2++;
-	str[i] = '\0';
-	return (str);
-}
-
-size_t	ft_strlcpy(char *dest, const char *src, size_t size)
-{
-	size_t	i;
-
-	if (size == 0)
-		return (ft_strlen(src));
-	i = 0;
-	while (src[i] && i < (size - 1))
-	{
-		dest[i] = src[i];
-		i++;
-	}
-	dest[i] = '\0';
-	return (ft_strlen(src));
-}
-
-int get_new_line_index(const char *str)
-{
-	int	i;
-
-	if (!str)
-		return (-1);
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '\n')
-			return (i);
-		i++;
-	}
-	return (-1);
+    if (!*data)
+        *data = create_data(fd);
+    current = *data;
+    while (current)
+    {
+        		if (current->fd == fd)
+			return (current);
+		if (!current->next)
+		{
+			current->next = create_data(fd);
+			return (current->next);
+		}
+		current = current->next;
+    }
+    return (*data);
 }
