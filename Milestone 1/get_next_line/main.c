@@ -18,19 +18,19 @@ int main()
     int		i = 0;
 
     g_fd = fopen(g_file_name, "r");
-    
+
     while((linha = get_next_line(g_fd->_fileno)) != NULL)
     {
         // ANSI escape codes for coloring
         const char *color_start = "\033[1;32m"; // Bright green
         const char *color_end = "\033[0m"; // Reset color
 
-        printf("%s Line %i >>>%s %s ||||||||||||||||", color_start, i++, color_end, linha);
+        printf("%s Line %i >>>%s %s", color_start, i++, color_end, linha);
         free(linha);
-        // if(i == 20)
-        //     break;
+        if(i == 3)
+            break;
     }
-    
+
     fclose(g_fd);
     return (0);
 }
