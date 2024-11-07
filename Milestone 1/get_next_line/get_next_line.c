@@ -6,13 +6,13 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:28:40 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/11/06 16:28:51 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/11/07 11:10:54 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void read_process(t_data **data)
+static ssize_t custom_read(t_data **data)
 {
     ssize_t bytes_read;
     int i;
@@ -28,9 +28,37 @@ void read_process(t_data **data)
     return (bytes_read);
 }
 
-void read_line(t_data **data)
+void fill_string_with_buffer(t_data **data, ssize_t bytes_read)
 {
-    read_process(data);
+    int i;
+
+    i = -1;
+    if ((*data)->nl_index == -1)
+    {
+        while (++i < bytes_read)
+            (*data)->string[(*data)->str_len++] = (*data)->buffer[i];
+    }
+    else
+    {
+
+    }
+}
+
+static char *read_line(t_data **data)
+{
+    ssize_t bytes_read;
+
+    clean_string(data);
+    while ((*data)->nl_index == -1)
+    {
+        bytes_read = custom_read(data);
+        if (bytes_read == -1)
+            return (NULL);
+        if (bytes_read == 0)
+            break;
+        fill_string_with_buffer(data, bytes_read);
+    }
+    return (malloc_string((*data)->string))
 }
 
 char *get_next_line(int fd)
@@ -42,5 +70,5 @@ char *get_next_line(int fd)
 
     if (init_data(&data, fd) == NULL)
         return (NULL);
-    read_line(&data);
+    return (read_line(&data));
 }

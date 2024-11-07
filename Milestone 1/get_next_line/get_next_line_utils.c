@@ -6,7 +6,7 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:31:02 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/11/06 16:21:28 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/11/07 09:48:31 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,11 @@ t_data *calloc_new_struct(int fd)
     i = 0;
     while (i < BUFFER_SIZE)
         new_data->buffer[i++] = '\0';
+    i = 0;
+    while(i < ARRAY_LENTH)
+        new_data->string[i++] = '\0';
     new_data->nl_index = -1;
-    new_data->start_string = NULL;
+    new_data->str_len = 0;
     new_data->next = NULL;
     return (new_data);
 }
