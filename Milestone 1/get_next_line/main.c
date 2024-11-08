@@ -27,8 +27,8 @@ int main()
 
         printf("%s Line %i >>>%s %s", color_start, i++, color_end, linha);
         free(linha);
-        if(i == 3)
-            break;
+        // if(i == 3)
+        //     break;
     }
 
     fclose(g_fd);

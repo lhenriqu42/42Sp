@@ -6,7 +6,7 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 10:30:48 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/11/07 15:47:20 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/11/08 18:58:05 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,12 @@ typedef struct s_data
 	char	string[ARRAY_SIZE];
 	struct s_data	*next;
 }			t_data;
+
+char	*malloc_string(t_data *data);
+char	*get_next_line(int fd);
+
+ssize_t	custom_read(t_data *data);
+
 
 t_data	*calloc_new_struct(int fd);
 t_data	*init_data(t_data **data, int fd);
