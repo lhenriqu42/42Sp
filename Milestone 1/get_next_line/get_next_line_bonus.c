@@ -6,31 +6,11 @@
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/21 19:00:53 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/11/21 19:02:29 by lhenriqu         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:15:47 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-static char	*ft_read(int fd, char *buffer);
-static char	*get_line(char *buffer);
-static char	*get_rest(char *buffer);
-
-char	*get_next_line(int fd)
-{
-	static char	*buffer[2048];
-	char		*line;
-
-	if (BUFFER_SIZE <= 0 || fd < 0)
-		return (NULL);
-	buffer[fd] = ft_read(fd, buffer[fd]);
-	if (buffer[fd] == NULL)
-		return (NULL);
-	line = NULL;
-	line = get_line(buffer[fd]);
-	buffer[fd] = get_rest(buffer[fd]);
-	return (line);
-}
 
 static char	*ft_read(int fd, char *buffer)
 {
@@ -91,4 +71,20 @@ static char	*get_rest(char *buffer)
 		rest = ft_strdup(nl_address + 1);
 	free(buffer);
 	return (rest);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*buffer[2048];
+	char		*line;
+
+	if (BUFFER_SIZE <= 0 || fd < 0)
+		return (NULL);
+	buffer[fd] = ft_read(fd, buffer[fd]);
+	if (buffer[fd] == NULL)
+		return (NULL);
+	line = NULL;
+	line = get_line(buffer[fd]);
+	buffer[fd] = get_rest(buffer[fd]);
+	return (line);
 }
