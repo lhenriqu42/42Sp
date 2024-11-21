@@ -37,11 +37,11 @@ $(BIN_PATH):
 
 clean:
 	@echo $(RED)[Removing Objects...]$(COLOR_LIMITER)
-	@rm -rf $(BIN_PATH) $(LIB_BIN_PATH)
+	@rm -rf $(BIN_PATH)
 
 fclean: clean
 	@echo $(RED)[Removing $(notdir $(NAME))...]$(COLOR_LIMITER)
-	@rm -f $(NAME) $(LIB_NAME)
+	@rm -f $(NAME)
 
 re: fclean
 	@make --no-print-directory
