@@ -5,91 +5,91 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: lhenriqu <lhenriqu@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/16 10:31:02 by lhenriqu          #+#    #+#             */
-/*   Updated: 2024/11/08 18:49:34 by lhenriqu         ###   ########.fr       */
+/*   Created: 2024/11/21 18:12:52 by lhenriqu          #+#    #+#             */
+/*   Updated: 2024/11/21 18:26:35 by lhenriqu         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-t_data *calloc_new_struct(int fd)
+size_t	ft_strlen(const char *s)
 {
-	t_data *new_data;
-	int i;
+	size_t	len;
 
-	new_data = (t_data *)malloc(sizeof(t_data));
-	if (!new_data)
-		return (NULL);
-	new_data->fd = fd;
-	i = 0;
-	while (i < BUFFER_SIZE)
-		new_data->buffer[i++] = '\0';
-	i = 0;
-	while (i < ARRAY_SIZE)
-		new_data->string[i++] = '\0';
-	new_data->nl_index = -1;
-	new_data->str_len = 0;
-	new_data->next = NULL;
-	return (new_data);
+	len = 0;
+	while (s[len])
+		len++;
+	return (len);
 }
 
-t_data *init_data(t_data **data, int fd)
+char	*ft_strncpy(char *dest, const char *src, size_t n)
 {
-	t_data *current;
-	int i;
+	size_t	i;
 
-	if (!*data)
-		*data = calloc_new_struct(fd);
-	current = *data;
-	while (current)
+	i = 0;
+	while (src[i] && (i < n))
 	{
-		if (current->fd == fd)
-		{
-			i = -1;
-			while (++i < ARRAY_SIZE)
-				current->string[i] = '\0';
-			current->str_len = 0;
-			return (current);
-		}
-		if (!current->next)
-		{
-			current->next = calloc_new_struct(fd);
-			return (current->next);
-		}
-		current = current->next;
-	}
-	return (current);
-}
-
-char *malloc_string(t_data *data)
-{
-	char *str;
-	int i;
-
-	if (data->str_len == 0)
-		return (NULL);
-	i = -1;
-	str = (char *)malloc(data->str_len + 1);
-	while (++i <= data->str_len)
-		str[i] = data->string[i];
-	return (str);
-}
-
-ssize_t custom_read(t_data *data)
-{
-	ssize_t bytes_read;
-	int i;
-
-	i = -1;
-	while (++i < BUFFER_SIZE)
-		data->buffer[i] = '\0';
-	bytes_read = read(data->fd, data->buffer, BUFFER_SIZE);
-	i = 0;
-	while (i < bytes_read && data->buffer[i] != '\n')
+		dest[i] = src[i];
 		i++;
-	if (i < bytes_read && data->buffer[i] == '\n')
-		data->nl_index = i;
-	else
-		data->nl_index = -1;
-	return (bytes_read);
+	}
+	while (i < n)
+	{
+		dest[i] = '\0';
+		i++;
+	}
+	return (dest);
+}
+
+char	*get_nl_address(const char *s)
+{
+	if (s == NULL)
+		return (NULL);
+	while (*s)
+	{
+		if (*s == '\n')
+			return ((char *)s);
+		s++;
+	}
+	return (NULL);
+}
+
+char	*ft_strdup(const char *s)
+{
+	size_t	i;
+	char	*new_string;
+
+	new_string = malloc(ft_strlen(s) + 1);
+	i = 0;
+	if (new_string == NULL)
+		return (NULL);
+	while (s[i])
+	{
+		new_string[i] = s[i];
+		i++;
+	}
+	new_string[i] = '\0';
+	return (new_string);
+}
+
+char	*ft_strjoin(char *s1, char *s2)
+{
+	char	*new_string;
+	int		j;
+	int		i;
+
+	if (s1 == NULL)
+		s1 = ft_strdup("");
+	new_string = malloc((ft_strlen(s1) + ft_strlen(s2) + 1));
+	if (new_string == NULL)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s1[i])
+		new_string[j++] = s1[i++];
+	i = 0;
+	while (s2[i])
+		new_string[j++] = s2[i++];
+	new_string[j] = '\0';
+	free((char *)s1);
+	return (new_string);
 }
