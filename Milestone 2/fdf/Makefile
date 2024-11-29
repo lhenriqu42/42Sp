@@ -9,6 +9,8 @@ MLX_FLAGS := -lbsd -lX11 -lXext -lmlx
 # LIBS
 MLX_PATH := ./libs/minilibx-linux
 MLX_NAME := libmlx_Linux.a
+LIB_PATH := ./libs/libft
+LIB_NAME := libft.a
 
 # PATHS
 BIN_PATH := ./bin/
@@ -22,16 +24,23 @@ VIOLET := \033[38;5;208m
 COLOR_LIMITER := \033[0m
 
 # SOURCES AND OBJECTS
-SRCS := main.c
+SRCS := main.c error.c
 OBJ := $(addprefix $(BIN_PATH), $(SRCS:%.c=%.o))
 
-all: mlx $(BIN_PATH) print $(NAME)
+all: mlx libft $(BIN_PATH) print $(NAME)
+
+libft:
+ifeq ($(wildcard $(LIB_PATH)/$(LIB_NAME)),)
+	@make -C $(LIB_PATH) --no-print-directory
+	@make get_next_line -C $(LIB_PATH) --no-print-directory
+	@make ft_printf -C $(LIB_PATH) --no-print-directory
+endif
 
 mlx:
 ifeq ($(wildcard $(MLX_PATH)/$(MLX_NAME)),)
-	@echo -e "$(CYAN) -------------------------$(COLOR_LIMITER)"
-	@echo -e "$(CYAN)| Compiling MINLIBX-LINUX |$(COLOR_LIMITER)"
-	@echo -e "$(CYAN)--------------------------$(COLOR_LIMITER)"
+	@printf "$(CYAN) -------------------------$(COLOR_LIMITER)"
+	@printf "$(CYAN)| Compiling MINLIBX-LINUX |$(COLOR_LIMITER)"
+	@printf "$(CYAN)--------------------------$(COLOR_LIMITER)"
 	@echo " "
 	@make -C $(MLX_PATH) --no-print-directory
 endif
@@ -40,34 +49,37 @@ $(BIN_PATH):
 	@mkdir -p $(BIN_PATH)
 
 $(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -lm -L $(MLX_PATH) $(MLX_FLAGS)
-	@echo -e "$(CYAN) --------------------------------------------$(COLOR_LIMITER)"
-	@echo -e "$(CYAN)| FDF executable was created successfully!! |$(COLOR_LIMITER)"
-	@echo -e "$(CYAN)--------------------------------------------$(COLOR_LIMITER)"
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) -lm -L $(LIB_PATH) -lft -L $(MLX_PATH) $(MLX_FLAGS)
+	@printf "$(CYAN) --------------------------------------------$(COLOR_LIMITER)"
+	@printf "$(CYAN)| FDF executable was created successfully!! |$(COLOR_LIMITER)"
+	@printf "$(CYAN)--------------------------------------------$(COLOR_LIMITER)"
 	@echo " "
 
 print: 
-	@echo -e "$(CYAN) ----------------------$(COLOR_LIMITER)"
-	@echo -e "$(CYAN)| Compiling My Project |$(COLOR_LIMITER)"
-	@echo -e "$(CYAN)-----------------------$(COLOR_LIMITER)"
+	@printf "$(CYAN) ----------------------$(COLOR_LIMITER)"
+	@printf "$(CYAN)| Compiling My Project |$(COLOR_LIMITER)"
+	@printf "$(CYAN)-----------------------$(COLOR_LIMITER)"
 	@echo " "
 	
 $(BIN_PATH)%.o: %.c
-	@echo -e "$(GREEN)[Compiling]$(COLOR_LIMITER) $(notdir $<)..."
+	@printf "$(GREEN)[Compiling]$(COLOR_LIMITER) $(notdir $<)..."
 	@$(CC) $(CFLAGS) -c $< -o $@ -I $(HEADER_PATH)
 	@echo " "
 
 clean:
-	@echo -e "$(RED)[Removing Objects...]$(COLOR_LIMITER)"
+	@printf "$(RED)[Removing Objects...]$(COLOR_LIMITER)"
 	@make clean -C $(MLX_PATH) --no-print-directory
+	@make clean -C $(LIB_PATH) --no-print-directory
 	@rm -rf $(BIN_PATH)
 
 fclean: clean
-	@echo -e "$(RED)[Removing $(notdir $(NAME))...]$(COLOR_LIMITER)"
+	@printf "$(RED)[Removing $(notdir $(NAME))...]$(COLOR_LIMITER)\n"
+	@make fclean -C $(LIB_PATH) --no-print-directory
 	@rm -rf $(VALGRIND_LOG)
 	@rm -rf $(NAME)
 
-re: fclean all
+re: fclean
+	@make --no-print-directory
 
 valgrind: all
 	@valgrind --leak-check=full \
@@ -78,4 +90,4 @@ valgrind: all
 	./$(NAME) ./maps/42.fdf
 	@cat $(VALGRIND_LOG)
 
-.PHONY: all clean fclean re mlx print valgrind nf
+.PHONY: all clean fclean re mlx print valgrind nf libft
