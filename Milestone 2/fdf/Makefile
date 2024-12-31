@@ -3,7 +3,7 @@ NAME := fdf
 VALGRIND_LOG = valgrind.log
 
 # FLAGS
-CFLAGS := -O3 -ffast-math -fno-stack-protector -Wall -Wextra -g3
+CFLAGS := -O3 -ffast-math -fno-stack-protector -Wall -Wextra -Werror -g3
 MLX_FLAGS := -lbsd -lX11 -lXext -lmlx
 
 # LIBS
@@ -90,4 +90,4 @@ valgrind: all
 	./$(NAME) ./maps/42.fdf
 	@cat $(VALGRIND_LOG)
 
-.PHONY: all clean fclean re mlx print valgrind nf libft
+.PHONY: all clean fclean re mlx print valgrind libft
